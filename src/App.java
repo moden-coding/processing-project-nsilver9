@@ -5,24 +5,33 @@ public class App extends PApplet {
         PApplet.main("App");
     }
 
-    float rectX = 375; 
-    float rectY = 50;
-    float rectSize = 50; // Floats create the first rectangle
-    float offsetX1, offsetY1; // Offset for first rectangle
-    boolean dragging = false; // First rectangle dragging is false
-    float rect2X = 450;
-    float rect2Y = 550;
-    float rect2Size = 50; // Creating the second rectangle
-    float offsetX2, offsetY2; // Offset for second rectangle
-    boolean dragging2 = false; // Second rectangle dragging is false
+    float darkGreenRectX = 375; 
+    float darkGreenRectY = 50;
+    float darkGreenRectSize = 50; // Floats create the first rectangle
+    float darkGreenOffsetX, darkGreenOffsetY; // Offset for first rectangle
+    boolean darkGreenDragging = false; // First rectangle dragging is false
+
+    float blueRectX = 450;
+    float blueRectY = 550;
+    float blueRectSize = 50; // Creating the second rectangle
+    float blueOffsetX, blueOffsetY; // Offset for second rectangle
+    boolean blueDragging = false; // Second rectangle dragging is false
+
+    float darkGreenTargetX = 450;
+    float darkGreenTargetY = 90;
+    float darkGreenTargetSize = 50;
+
+    float blueTargetX = 350;
+    float blueTargetY = 90;
+    float blueTargetSize = 50;
+
+    boolean darkGreenInTarget = false;
+    boolean blueInTarget = true;
 
     public void setup() {
         background(40040);
         strokeWeight(20);
 
-        fill(00);
-        textSize(50);
-        text("Complete the puzzle as shown on the left.", 315, 50);
     }
 
     public void settings() {
@@ -31,6 +40,16 @@ public class App extends PApplet {
 
     public void draw() {
         background(40040); // Clear background every frame
+
+        stroke(0);
+        textSize(15);
+        fill(00, 00, 00);
+        text("Complete the puzzle as shown on the left.", 315, 25);
+
+        stroke(0);
+        textSize(15);
+        fill(00, 00, 00);
+        text("If a shape turns green, it's in the right place.", 315, 40);
 
         // Line divider
         stroke(0);
@@ -48,94 +67,122 @@ public class App extends PApplet {
         fill(5, 5, 150);
         rect(50, 100, 50, 50);
 
-        stroke(0);
-        strokeWeight(10);
-        fill(100, 50, 5);
-        rect(30, 200, 25, 25);
-
-        stroke(0);
-        strokeWeight(10);
-        fill(40, 225, 60);
-        rect(50, 250, 25, 25);
-
-        stroke(0);
-        strokeWeight(10);
-        fill(200, 0, 15);
-        rect(70, 300, 25, 25);
-        
-        stroke(0);
-        strokeWeight(10);
-        fill(0, 0, 15);
-        rect(110, 300, 25, 25);
-        
-        stroke(0);
-        strokeWeight(10);
-        fill(0, 100, 15);
-        rect(150, 300, 25, 25);
-
         // First draggable rectangle
-        if (!dragging) {  // Only draw the rectangle if it's not being dragged
+        if (!darkGreenDragging) {  // Only draw the rectangle if it's not being dragged
             stroke(0);
             strokeWeight(10);
             fill(0, 50, 5);
-            rect(rectX, rectY, rectSize, rectSize);
+            rect(darkGreenRectX, darkGreenRectY, darkGreenRectSize, darkGreenRectSize);
         } else {
             // Draw the new rectangle at the mouse location while dragging
             stroke(0);
             strokeWeight(10);
             fill(0, 50, 5);  // You can change the color or appearance here
-            rect(mouseX + offsetX1, mouseY + offsetY1, rectSize, rectSize);
+            rect(mouseX + darkGreenOffsetX, mouseY + darkGreenOffsetY, darkGreenRectSize, darkGreenRectSize);
         }
 
         // Second draggable rectangle
-        if (!dragging2) {  // Only draw the rectangle if it's not being dragged
+        if (!blueDragging) {  // Only draw the rectangle if it's not being dragged
             stroke(0);
             strokeWeight(10);
-            fill(100, 50, 5);
-            rect(rect2X, rect2Y, rect2Size, rect2Size);
+            fill(5, 5, 150);
+            rect(blueRectX, blueRectY, blueRectSize, blueRectSize);
         } else {
             // Draw the new rectangle at the mouse location while dragging
             stroke(0);
             strokeWeight(10);
-            fill(100, 50, 5);  // You can change the color or appearance here
-            rect(mouseX + offsetX2, mouseY + offsetY2, rect2Size, rect2Size);
+            fill(5, 5, 150);  // You can change the color or appearance here
+            rect(mouseX + blueOffsetX, mouseY + blueOffsetY, blueRectSize, blueRectSize);
+        }
+     
+
+        if (!darkGreenDragging) {
+            if (darkGreenRectX > darkGreenTargetX && darkGreenRectX < darkGreenTargetX + darkGreenTargetSize &&
+                darkGreenRectY > darkGreenTargetY && darkGreenRectY < darkGreenTargetY + darkGreenTargetSize) {
+                // If the rectangle is inside the target space, make it green
+
+                fill(0, 255, 0);
+                darkGreenInTarget = true;
+            } else {
+                // Otherwise, keep its normal color
+                fill(0, 50, 5);
+                darkGreenInTarget = false;
+            }
+            stroke(0);
+            strokeWeight(10);
+            rect(darkGreenRectX, darkGreenRectY, darkGreenRectSize, darkGreenRectSize);
+        } else {
+            // Draw the rectangle at the mouse location while dragging
+            stroke(0);
+            strokeWeight(10);
+            fill(0, 50, 5);
+            rect(mouseX + darkGreenOffsetX, mouseY + darkGreenOffsetY, darkGreenRectSize, darkGreenRectSize);
+        }
+
+        if (!blueDragging) {
+            if (blueRectX > blueTargetX && blueRectX < blueTargetX + blueTargetSize &&
+                blueRectY > blueTargetY && blueRectY < blueTargetY + blueTargetSize) {
+                // If the rectangle is inside the target space, make it green
+
+                fill(0, 255, 0);
+                blueInTarget = true;
+            } else {
+                // Otherwise, keep its normal color
+                fill(5, 5, 150);
+                blueInTarget = false;
+            }
+            stroke(0);
+            strokeWeight(10);
+            rect(blueRectX, blueRectY, blueRectSize, blueRectSize);
+        } else {
+            // Draw the rectangle at the mouse location while dragging
+            stroke(0);
+            strokeWeight(10);
+            fill(5, 5, 150);
+            rect(mouseX + blueOffsetX, mouseY + blueOffsetY, blueRectSize, blueRectSize);
+        }
+
+        if (darkGreenInTarget == true && blueInTarget == true) {
+            stroke(0);
+            textSize(70);
+            fill(00, 00, 00);
+            text("Complete!", 135, 300);
+        } else {
+            // Nothing else is needed here
         }
     }
 
     public void mousePressed() {
         // Check if the first rectangle is clicked
-        if (mouseX > rectX && mouseX < rectX + rectSize &&
-            mouseY > rectY && mouseY < rectY + rectSize) {
-            dragging = true; // Start dragging the first rectangle
-            offsetX1 = rectX - mouseX; // Calculate offset for the first rectangle
-            offsetY1 = rectY - mouseY;
+        if (mouseX > darkGreenRectX && mouseX < darkGreenRectX + darkGreenRectSize &&
+            mouseY > darkGreenRectY && mouseY < darkGreenRectY + darkGreenRectSize) {
+            darkGreenDragging = true; // Start dragging the first rectangle
+            darkGreenOffsetX = darkGreenRectX - mouseX; // Calculate offset for the first rectangle
+            darkGreenOffsetY = darkGreenRectY - mouseY;
         }
 
         // Check if the second rectangle is clicked
-        if (mouseX > rect2X && mouseX < rect2X + rect2Size &&
-            mouseY > rect2Y && mouseY < rect2Y + rect2Size) {
-            dragging2 = true; // Start dragging the second rectangle
-            offsetX2 = rect2X - mouseX; // Calculate offset for the second rectangle
-            offsetY2 = rect2Y - mouseY;
+        if (mouseX > blueRectX && mouseX < blueRectX + blueRectSize &&
+            mouseY > blueRectY && mouseY < blueRectY + blueRectSize) {
+            blueDragging = true; // Start dragging the second rectangle
+            blueOffsetX = blueRectX - mouseX; // Calculate offset for the second rectangle
+            blueOffsetY = blueRectY - mouseY; }
         }
-    }
 
+       
     public void mouseReleased() {
-        if (dragging) {
+        if (darkGreenDragging) {
             // Update the position of the first rectangle to where the mouse is released
-            rectX = mouseX + offsetX1;
-            rectY = mouseY + offsetY1;
-            dragging = false;  // Stop dragging the first rectangle
+            darkGreenRectX = mouseX + darkGreenOffsetX;
+            darkGreenRectY = mouseY + darkGreenOffsetY;
+            darkGreenDragging = false;  // Stop dragging the first rectangle
         }
 
-        if (dragging2) {
+        if (blueDragging) {
             // Update the position of the second rectangle to where the mouse is released
-            rect2X = mouseX + offsetX2;
-            rect2Y = mouseY + offsetY2;
-            dragging2 = false;  // Stop dragging the second
-    }
-    
-
-
+            blueRectX = mouseX + blueOffsetX;
+            blueRectY = mouseY + blueOffsetY;
+            blueDragging = false;  // Stop dragging the second
+        }
 }
- }
+    }
